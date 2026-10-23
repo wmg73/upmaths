@@ -1,0 +1,442 @@
+[
+  {
+    "source": "PNG",
+    "target": "JPG",
+    "slug": "png-to-jpg",
+    "mimeSource": "image/png",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "有损",
+    "typicalSize": "2.4 MB → 350 KB",
+    "note": "PNG 是无损格式，不做任何画质妥协，因此文件体积往往较大。转换到 JPG 时浏览器会先将 PNG 解码到内存，再通过 JPEG 编码器重新采样和压缩。由于 JPG 不支持透明通道，原 PNG 中的 Alpha 层会被填充为白色背景。",
+    "useCases": [
+      "将设计稿导出后用于网络分享，需要更小体积",
+      "网站 SEO 优化，PNG 过大拖慢页面加载",
+      "批量将截图转为 JPG 节省存储空间"
+    ],
+    "caveats": "原 PNG 的透明通道会被丢弃，转为白色背景。文字、图表、Logo 等高对比元素在低质量参数下可能出现压缩块效应。",
+    "related": ["png-to-webp", "jpg-to-png", "heic-to-jpg"],
+    "faq": [
+      { "question": "PNG 转 JPG 后透明背景变成黑色怎么办？", "answer": "这是部分在线转换工具的默认行为。本工具默认将透明区域填充为白色背景，避免图片发暗。" },
+      { "question": "PNG 转 JPG 会损失多少画质？", "answer": "取决于 JPG 的质量参数。85-90 是质量和体积的最佳平衡点，肉眼几乎看不出区别。" },
+      { "question": "可以批量转换吗？", "answer": "当前版本一次处理一张图片，批量模式会在后续版本上线。" }
+    ]
+  },
+  {
+    "source": "PNG",
+    "target": "WebP",
+    "slug": "png-to-webp",
+    "mimeSource": "image/png",
+    "mimeTarget": "image/webp",
+    "conversionType": "有损",
+    "typicalSize": "2.4 MB → 560 KB",
+    "note": "PNG 转 WebP 是目前最推荐的图片优化手段。WebP 编码器会重新分析 PNG 的像素数据，采用更先进的预测编码和熵压缩算法。WebP 原生支持 Alpha 透明通道，PNG 的透明区域会被完整保留。",
+    "useCases": [
+      "网站图片 LCP 优化，提升加载速度",
+      "App 图片资源瘦身，减少流量消耗",
+      "CDN 自动转码链路接入"
+    ],
+    "caveats": "Safari 13 及以下版本不支持 WebP。WebP 不支持 EXIF 元数据，相机拍摄信息会丢失。",
+    "related": ["png-to-jpg", "webp-to-png", "gif-to-webp"],
+    "faq": [
+      { "question": "PNG 转 WebP 后透明背景还在吗？", "answer": "在。WebP 原生支持 Alpha 透明通道，能完整保留 PNG 的透明区域。" },
+      { "question": "WebP 比 PNG 能小多少？", "answer": "一般场景下，有损 WebP 比 PNG 小 30-50%。颜色越丰富、渐变越多，压缩比越高。" },
+      { "question": "老浏览器打不开 WebP 怎么办？", "answer": "现代浏览器全部支持。极少数老版本可用 picture 标签回退 PNG。" }
+    ]
+  },
+  {
+    "source": "PNG",
+    "target": "BMP",
+    "slug": "png-to-bmp",
+    "mimeSource": "image/png",
+    "mimeTarget": "image/bmp",
+    "conversionType": "无损",
+    "typicalSize": "2.4 MB → 6.1 MB",
+    "note": "BMP 是完全不压缩的原始位图格式，按像素逐位存储图像数据。转 BMP 相当于彻底去除 PNG 的压缩算法，文件体积会显著增大。仅在需要兼容老旧 Windows 系统或某些只接受 BMP 的专业软件时使用。",
+    "useCases": [
+      "Windows 系统内部图像处理工具链",
+      "老旧软件兼容导出",
+      "作为中间格式导入某些专业绘图软件"
+    ],
+    "caveats": "BMP 无任何压缩，体积比 PNG 大 2-3 倍。不支持跨平台元数据。",
+    "related": ["png-to-jpg", "bmp-to-png", "bmp-to-jpg"],
+    "faq": [
+      { "question": "PNG 转 BMP 会损失画质吗？", "answer": "不会。BMP 是无损格式，像素数据不会有任何变化。但体积会显著增大。" },
+      { "question": "为什么需要转 BMP？", "answer": "绝大多数场景下没必要，仅在某些老旧 Windows 程序中 BMP 是唯一可接受的输入格式。" },
+      { "question": "BMP 会保留透明通道吗？", "answer": "32 位 BMP 支持 Alpha 通道，本工具导出的 BMP 会完整保留原 PNG 的透明区域。" }
+    ]
+  },
+  {
+    "source": "PNG",
+    "target": "ICO",
+    "slug": "png-to-ico",
+    "mimeSource": "image/png",
+    "mimeTarget": "image/vnd.microsoft.icon",
+    "conversionType": "无损",
+    "typicalSize": "多尺寸打包",
+    "note": "ICO 是 Windows 图标格式，一个文件可内嵌多个尺寸帧（16×16 到 256×256）。浏览器不支持直接导出 ICO，本工具通过 Canvas 多档重采样后手动打包 ICO 二进制结构实现，适合制作网站 Favicon 和桌面图标。",
+    "useCases": [
+      "制作网站 Favicon（/favicon.ico）",
+      "Windows 桌面快捷方式图标",
+      "Chrome/Firefox 扩展图标"
+    ],
+    "caveats": "ICO 内帧不超过 256×256，原图建议至少 1024×1024 以保证小尺寸清晰度。复杂透明渐变在 16×16 下会丢失。",
+    "related": ["png-to-jpg", "png-to-webp", "bmp-to-png"],
+    "faq": [
+      { "question": "Favicon 必须用 ICO 吗？", "answer": "现代浏览器全部支持 PNG 格式 Favicon。ICO 主要用于兼容非常老的浏览器和 Windows 桌面图标。" },
+      { "question": "一个 ICO 里应该放哪些尺寸？", "answer": "推荐 16、32、48、256 四档，覆盖浏览器标签页和桌面大图标。" },
+      { "question": "转 ICO 后图标变糊了？", "answer": "原图分辨率太小。建议使用至少 512×512 以上的 PNG 源图。" }
+    ]
+  },
+  {
+    "source": "JPG",
+    "target": "PNG",
+    "slug": "jpg-to-png",
+    "mimeSource": "image/jpeg",
+    "mimeTarget": "image/png",
+    "conversionType": "无损",
+    "typicalSize": "500 KB → 3.2 MB",
+    "note": "JPG 是有损压缩格式，像素数据已经历过一次不可逆压缩。转换成 PNG 时浏览器会将 JPG 解码还原为位图数据，再用 PNG 的无损算法重新编码。转换本身不会再损失画质，但 JPG 原始压缩带来的损失无法通过任何格式转换恢复。",
+    "useCases": [
+      "向只接受 PNG 的系统或平台提交图片",
+      "在传统设计软件中编辑已有的 JPG 照片",
+      "为已有照片做无损归档存储"
+    ],
+    "caveats": "JPG 已损失的画质无法通过转 PNG 恢复。文件体积通常会变大 3-5 倍。",
+    "related": ["jpg-to-webp", "png-to-jpg", "svg-to-jpg"],
+    "faq": [
+      { "question": "JPG 转 PNG 能提升画质吗？", "answer": "不能。JPG 一旦保存就丢失了部分原始信息，转成任何无损格式都无法找回。" },
+      { "question": "JPG 转 PNG 后文件更大了？", "answer": "正常。JPG 对照片的压缩效率远高于 PNG。追求更小体积建议转 WebP。" },
+      { "question": "为什么转出来的 PNG 没有透明背景？", "answer": "因为 JPG 本身不支持透明通道，转换后的 PNG 自然也没有。" }
+    ]
+  },
+  {
+    "source": "JPG",
+    "target": "WebP",
+    "slug": "jpg-to-webp",
+    "mimeSource": "image/jpeg",
+    "mimeTarget": "image/webp",
+    "conversionType": "有损",
+    "typicalSize": "500 KB → 320 KB",
+    "note": "WebP 的有损编码器比 JPEG 更高效，在相同视觉质量下，WebP 体积可以比 JPG 再小 25-35%。如果原图 JPG 质量参数较高（90+），WebP 转码不会产生明显的额外画质损失。",
+    "useCases": [
+      "网站图片体积优化，提升 Core Web Vitals",
+      "移动端 App 资源瘦身",
+      "图片归档，用更小体积存储相同内容"
+    ],
+    "caveats": "如果原 JPG 已经经过多次压缩，WebP 转码会叠加新的有损。WebP 不支持 EXIF。",
+    "related": ["jpg-to-png", "png-to-webp", "webp-to-jpg"],
+    "faq": [
+      { "question": "JPG 转 WebP 肉眼看得出来区别吗？", "answer": "几乎看不出来。WebP 75 质量参数的视觉质量相当于 JPG 90+。" },
+      { "question": "WebP 能替代 JPG 吗？", "answer": "技术上完全可以。但生态迁移需要时间。" },
+      { "question": "为什么我的 CMS 还在用 JPG？", "answer": "CMS 图片处理管线历史悠久，升级需要适配多个环节。" }
+    ]
+  },
+  {
+    "source": "JPG",
+    "target": "BMP",
+    "slug": "jpg-to-bmp",
+    "mimeSource": "image/jpeg",
+    "mimeTarget": "image/bmp",
+    "conversionType": "无损",
+    "typicalSize": "500 KB → 4.8 MB",
+    "note": "JPG 转 BMP 是从有损格式到无压缩格式的转换。浏览器会先将 JPG 解码为完整的像素矩阵，再按 BMP 格式逐位存储。体积膨胀是正常的——BMP 不做任何压缩。",
+    "useCases": [
+      "Windows 老旧系统截图工具链兼容",
+      "导入只接受 BMP 的工业或医疗图像处理软件",
+      "用于某些硬件驱动的测试图像"
+    ],
+    "caveats": "体积会膨胀 5-10 倍。JPG 不支持透明通道，BMP 也不会凭空长出透明区域。",
+    "related": ["jpg-to-png", "bmp-to-jpg", "bmp-to-png"],
+    "faq": [
+      { "question": "JPG 转 BMP 好还是转 PNG 好？", "answer": "绝大多数情况转 PNG 更好。只有目标软件明确要求 BMP 时才转。" },
+      { "question": "为什么 BMP 文件这么大？", "answer": "BMP 几乎不压缩，每像素 3 字节。" },
+      { "question": "JPG 转 BMP 能恢复 EXIF 吗？", "answer": "不能。BMP 格式不支持 EXIF。" }
+    ]
+  },
+  {
+    "source": "WebP",
+    "target": "PNG",
+    "slug": "webp-to-png",
+    "mimeSource": "image/webp",
+    "mimeTarget": "image/png",
+    "conversionType": "无损",
+    "typicalSize": "560 KB → 2.1 MB",
+    "note": "WebP 转 PNG 是从现代格式回退到传统无损格式。WebP 的像素数据会被完整解码，Alpha 透明通道会被 PNG 完整保留。PNG 不做有损，转换本身不会再造成画质损失。",
+    "useCases": [
+      "在不支持 WebP 的老旧设备或软件上打开图片",
+      "导入不支持 WebP 的传统设计软件",
+      "向只接受 PNG 的系统提交素材"
+    ],
+    "caveats": "文件体积可能显著增大。如果原 WebP 是有损模式，转回 PNG 无法超越原有损质量。",
+    "related": ["webp-to-jpg", "png-to-webp", "webp-to-bmp"],
+    "faq": [
+      { "question": "WebP 转 PNG 会损失画质吗？", "answer": "无损 WebP 转 PNG 完全无损。有损 WebP 转 PNG 不会再额外损失。" },
+      { "question": "Photoshop 能直接打开 WebP 吗？", "answer": "Photoshop 23.2 及之后版本原生支持。更早版本需先转 PNG。" },
+      { "question": "WebP 动画能转 GIF 吗？", "answer": "当前版本只处理静态帧，动画转码后续上线。" }
+    ]
+  },
+  {
+    "source": "WebP",
+    "target": "JPG",
+    "slug": "webp-to-jpg",
+    "mimeSource": "image/webp",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "有损",
+    "typicalSize": "560 KB → 480 KB",
+    "note": "WebP 转 JPG 是现代格式回退到传统通用格式。浏览器将 WebP 解码为像素后，再用 JPEG 编码器重新压缩。由于 JPG 不支持透明通道，WebP 中的 Alpha 层会被填充为白色背景。",
+    "useCases": [
+      "向只接受 JPG 的老旧平台上传图片",
+      "跨设备分享时确保兼容性",
+      "在传统文档、PPT 中插入图片"
+    ],
+    "caveats": "原 WebP 的透明通道会丢失，转为白色背景。两次有损编码叠加可能造成额外的画质损失。",
+    "related": ["webp-to-png", "jpg-to-webp", "png-to-jpg"],
+    "faq": [
+      { "question": "WebP 转 JPG 叠加两次有损会很差吗？", "answer": "如果两者都用高质量参数（≥85），额外损失通常可以忽略。" },
+      { "question": "WebP 透明区域转 JPG 后变成什么颜色？", "answer": "本工具统一填充为白色背景。" },
+      { "question": "转完后还能再转回 WebP 吗？", "answer": "可以，但每次往返都会再次有损编码，建议保留原始文件。" }
+    ]
+  },
+  {
+    "source": "WebP",
+    "target": "BMP",
+    "slug": "webp-to-bmp",
+    "mimeSource": "image/webp",
+    "mimeTarget": "image/bmp",
+    "conversionType": "无损",
+    "typicalSize": "560 KB → 5.9 MB",
+    "note": "WebP 转 BMP 是从高效压缩格式到完全无压缩格式的回退。体积会膨胀一个数量级。仅在极少数需要 BMP 输入的老旧系统里才有意义。",
+    "useCases": [
+      "某些嵌入式设备或工业系统的固定格式要求",
+      "只接受 BMP 输入的 Windows 系统工具",
+      "作为中间格式导入极老旧的软件"
+    ],
+    "caveats": "体积膨胀严重（10 倍以上）。如果原 WebP 是有损模式，像素数据本身已经历过有损压缩。",
+    "related": ["webp-to-png", "webp-to-jpg", "bmp-to-webp"],
+    "faq": [
+      { "question": "什么时候需要 WebP 转 BMP？", "answer": "实际上很少，PNG 是更好的替代。只有目标系统明确只接受 bmp 时才需要。" },
+      { "question": "转 BMP 比转 PNG 有什么优势？", "answer": "没有。PNG 体积更小、有压缩、跨平台。" },
+      { "question": "为什么不直接从原图转 BMP？", "answer": "可以，WebP→BMP 本质是解码后重编码成无压缩格式。" }
+    ]
+  },
+  {
+    "source": "BMP",
+    "target": "PNG",
+    "slug": "bmp-to-png",
+    "mimeSource": "image/bmp",
+    "mimeTarget": "image/png",
+    "conversionType": "无损",
+    "typicalSize": "4.8 MB → 1.1 MB",
+    "note": "BMP 转 PNG 是从无压缩格式到高效无损格式的压缩。BMP 的原始像素数据被 PNG 的无损压缩算法重新打包，体积通常缩小 4-6 倍，且像素零损失。",
+    "useCases": [
+      "把老旧 Windows 截图或扫描件压缩存储",
+      "从只导出 BMP 的工具链拿图后统一格式",
+      "减少磁盘占用，文件体积缩小数倍"
+    ],
+    "related": ["bmp-to-jpg", "png-to-bmp", "bmp-to-webp"],
+    "faq": [
+      { "question": "BMP 转 PNG 会损失画质吗？", "answer": "不会。PNG 是无损格式，像素值和 BMP 完全一致。" },
+      { "question": "32 位 BMP 的透明通道能保留吗？", "answer": "能。Canvas API 解码 BMP 时会完整保留 Alpha 通道。" },
+      { "question": "BMP 转 PNG 好还是转 JPG 好？", "answer": "图形/截图/线稿用 PNG，照片用 JPG。" }
+    ]
+  },
+  {
+    "source": "BMP",
+    "target": "JPG",
+    "slug": "bmp-to-jpg",
+    "mimeSource": "image/bmp",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "有损",
+    "typicalSize": "4.8 MB → 520 KB",
+    "note": "BMP 是无压缩原始位图，转 JPG 是最直接的压缩手段。浏览器将 BMP 解码后，用 JPEG 编码器重新压缩，一张 4.8 MB 的 BMP 在 92 质量参数下通常压缩到 500 KB 左右。",
+    "useCases": [
+      "从老旧 Windows 系统导出的大图压缩分享",
+      "扫描件或截图转为网络友好的格式",
+      "批量将 BMP 素材瘦身"
+    ],
+    "caveats": "BMP 如果带透明通道（32 位），转 JPG 时透明区域会被填充为白色背景。JPG 是有损格式，不适合反复编辑的中间过程。",
+    "related": ["bmp-to-png", "jpg-to-bmp", "tiff-to-jpg"],
+    "faq": [
+      { "question": "BMP 转 JPG 体积能缩多少？", "answer": "通常 8-10 倍。颜色越丰富、渐变越多，压缩比越高。" },
+      { "question": "BMP 转 JPG 会不会糊？", "answer": "92 质量参数下肉眼通常看不出来。" },
+      { "question": "转完 JPG 后还能转回 BMP 吗？", "answer": "能，但转回 BMP 只是把 JPG 已有损的像素重新展开。" }
+    ]
+  },
+  {
+    "source": "BMP",
+    "target": "WebP",
+    "slug": "bmp-to-webp",
+    "mimeSource": "image/bmp",
+    "mimeTarget": "image/webp",
+    "conversionType": "有损",
+    "typicalSize": "4.8 MB → 340 KB",
+    "note": "WebP 比 JPG 更高效，BMP 转 WebP 的压缩比在相同视觉质量下能比 JPG 再小 25-35%。WebP 原生支持透明通道，源 BMP 的 Alpha 区域会被完整保留。",
+    "useCases": [
+      "超大 BMP 图的终极压缩方案",
+      "需要保留透明通道同时小体积",
+      "批量老旧素材瘦身"
+    ],
+    "related": ["bmp-to-png", "bmp-to-jpg", "webp-to-bmp"],
+    "faq": [
+      { "question": "BMP 转 WebP 比转 JPG 好在哪？", "answer": "体积更小、支持透明通道、画质更好。" },
+      { "question": "WebP 有损和无损该选哪个？", "answer": "大多数场景用有损（质量 80-92），像素级还原才用无损。" },
+      { "question": "转换速度怎么样？", "answer": "1920×1080 的 BMP 在 Chrome 里约 0.5-2 秒。" }
+    ]
+  },
+  {
+    "source": "HEIC",
+    "target": "JPG",
+    "slug": "heic-to-jpg",
+    "mimeSource": "image/heic",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "有损",
+    "typicalSize": "3.1 MB → 850 KB",
+    "note": "HEIC 是 Apple iPhone 默认拍照格式，压缩效率比 JPG 高 2 倍以上。但在 Windows 和安卓部分设备上 HEIC 并不被广泛支持。转 JPG 是最通用的跨平台分享方式，转换后兼容性更好但可能损失部分画质。转换过程通过 heic2any 库在浏览器端解码。",
+    "useCases": [
+      "从 iPhone 导出照片分享给 Windows 用户",
+      "向不支持 HEIC 的社交平台上传",
+      "照片归档，跨设备统一格式"
+    ],
+    "caveats": "heic2any 是 WASM 实现，大文件转换时 CPU 占用较高，建议单个文件 ≤ 20MB。Windows 上首次加载 HEIC 解码库会稍慢（约 2-3 秒）。",
+    "related": ["heic-to-png", "png-to-jpg", "jpg-to-png"],
+    "faq": [
+      { "question": "iPhone 拍的照片为什么是 HEIC 而不是 JPG？", "answer": "从 iOS 11 开始 iPhone 默认用 HEIC 拍照，同画质下体积约为 JPG 的 1/2。" },
+      { "question": "HEIC 转 JPG 会丢 EXIF 吗？", "answer": "会。当前转换链路不保留 EXIF 元数据。" },
+      { "question": "Windows 打不开 HEIC 怎么办？", "answer": "Windows 11 自带支持，Windows 10 需安装 HEIC 扩展，或用本工具转 JPG。" }
+    ]
+  },
+  {
+    "source": "HEIC",
+    "target": "PNG",
+    "slug": "heic-to-png",
+    "mimeSource": "image/heic",
+    "mimeTarget": "image/png",
+    "conversionType": "无损",
+    "typicalSize": "3.1 MB → 6.8 MB",
+    "note": "HEIC 转 PNG 是从现代高效压缩格式到传统无损格式的回退。PNG 会完整保留 HEIC 解码后的像素数据，包括 Alpha 透明通道。PNG 体积比 HEIC 大很多，但跨平台兼容性最好。",
+    "useCases": [
+      "向只接受 PNG 的系统提交 iPhone 照片",
+      "在传统设计软件中编辑 iPhone 拍摄的图片",
+      "需要无损归档时统一为 PNG"
+    ],
+    "caveats": "PNG 体积显著大于 HEIC 或 JPG。HEIC 是有损格式，转 PNG 无法还原 HEIC 原始的有损损失。",
+    "related": ["heic-to-jpg", "webp-to-png", "png-to-webp"],
+    "faq": [
+      { "question": "HEIC 转 PNG 体积会有多大？", "answer": "通常是原 HEIC 的 2-3 倍，这是正常现象。" },
+      { "question": "HEIC 支持 HDR 转 PNG 会怎么样？", "answer": "HDR 信息会被做色调映射压缩为标准 SDR，PNG 本身不支持 HDR。" },
+      { "question": "能批量转 iPhone 的 HEIC 照片吗？", "answer": "当前版本单张处理，批量功能后续上线。" }
+    ]
+  },
+  {
+    "source": "SVG",
+    "target": "PNG",
+    "slug": "svg-to-png",
+    "mimeSource": "image/svg+xml",
+    "mimeTarget": "image/png",
+    "conversionType": "无损",
+    "typicalSize": "12 KB → 180 KB (1024×1024)",
+    "note": "SVG 是矢量格式，可以任意缩放不失真。转 PNG 需要先栅格化——本工具会从 SVG 的 viewBox 属性推算目标尺寸，然后渲染到 Canvas 再导出。默认栅格化最大边不超过 4096 像素。",
+    "useCases": [
+      "将矢量 Logo 导出为 PNG 用于不支持 SVG 的平台",
+      "PPT、Word 等传统办公软件插入图片",
+      "社交媒体分享（多数平台不支持 SVG 上传）"
+    ],
+    "caveats": "SVG 中的外链资源（如 image 标签引用外部位图）可能因跨域限制无法加载，导致输出空白。纯矢量图形不受影响。",
+    "related": ["svg-to-jpg", "png-to-ico", "png-to-webp"],
+    "faq": [
+      { "question": "SVG 转 PNG 最清楚的尺寸是多少？", "answer": "网站图标 256 或 512，印刷至少 1024。本工具自动从 viewBox 推算。" },
+      { "question": "为什么转出来的 PNG 是透明背景？", "answer": "因为 SVG 本身没有画布底色。需要白底可转 JPG 或手动加背景矩形。" },
+      { "question": "SVG 里的文字转 PNG 后字体变了？", "answer": "text 元素依赖系统字体渲染，建议把文字转成路径再栅格化。" }
+    ]
+  },
+  {
+    "source": "SVG",
+    "target": "JPG",
+    "slug": "svg-to-jpg",
+    "mimeSource": "image/svg+xml",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "有损",
+    "typicalSize": "12 KB → 120 KB (1024×1024)",
+    "note": "SVG 转 JPG 比转 PNG 多一步：因为 JPG 不支持透明通道，栅格化后会自动填充白色背景再编码。JPG 体积更小，适合分享和网络传输。",
+    "useCases": [
+      "向不支持 SVG 或透明 PNG 的平台上传矢量 Logo",
+      "社交媒体发帖配图（自动白底）",
+      "文档、邮件内嵌图片"
+    ],
+    "caveats": "SVG 中的透明背景会被自动填白——如果希望深色背景请先在 SVG 里加 rect 底色。文字转 JPG 也会受系统字体影响。",
+    "related": ["svg-to-png", "jpg-to-png", "png-to-jpg"],
+    "faq": [
+      { "question": "SVG 转 JPG 为什么有白边？", "answer": "viewBox 和内容区域有留白时，栅格化+填白后看起来像白边。加铺满的背景矩形可消除。" },
+      { "question": "SVG 转 JPG 质量参数调多少？", "answer": "默认 92 已很清楚，打印可调 95，低于 80 锐利边缘会有块效应。" },
+      { "question": "SVG 里的渐变转 JPG 会有问题吗？", "answer": "线性、径向渐变正常保留，复杂滤镜边缘可能稍有伪影。" }
+    ]
+  },
+  {
+    "source": "TIFF",
+    "target": "JPG",
+    "slug": "tiff-to-jpg",
+    "mimeSource": "image/tiff",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "有损",
+    "noindex": true,
+    "typicalSize": "需服务端处理",
+    "note": "TIFF 是无损高保真图像格式，常用于印刷、出版和专业摄影归档。但绝大多数浏览器不支持原生解码 TIFF（仅 Safari 部分支持）。因此 TIFF→JPG 转换无法在纯浏览器端可靠完成，需要服务端使用 ImageMagick 等库处理。本站当前未部署服务端 TIFF 解码能力，该转换对暂不可用，建议将 TIFF 先用本地软件转为 PNG/JPG 后再使用本站其他转换。",
+    "useCases": [
+      "印刷扫描件或出版物 TIFF 转 JPG 用于网络分发",
+      "专业摄影 RAW 转换后的 TIFF 归档再压缩分享",
+      "医学影像 TIFF 缩略图生成"
+    ],
+    "caveats": "当前浏览器端不支持 TIFF 解码，该转换对需要服务端处理（如 ImageMagick / sharp / libvips）。建议将 TIFF 先转为 PNG 再上传，或部署带图片处理的后端服务。",
+    "related": ["tiff-to-png", "bmp-to-jpg", "png-to-jpg"],
+    "faq": [
+      { "question": "为什么 TIFF 不能在浏览器端直接转？", "answer": "TIFF 是极其复杂的容器格式，包含大量编解码器和标记，主流浏览器为安全和性能考虑未内置 TIFF 解码器。" },
+      { "question": "有哪些服务端方案？", "answer": "ImageMagick、sharp（Node.js）、libvips 都能高效处理 TIFF，适合部署在 Vercel Edge Functions 或自建后端。" },
+      { "question": "我能绕过限制吗？", "answer": "可以把 TIFF 先用 Photoshop / XnView 等本地软件转成 PNG，再用本工具转 JPG。" }
+    ]
+  },
+  {
+    "source": "TIFF",
+    "target": "PNG",
+    "slug": "tiff-to-png",
+    "mimeSource": "image/tiff",
+    "mimeTarget": "image/png",
+    "conversionType": "无损",
+    "noindex": true,
+    "typicalSize": "需服务端处理",
+    "note": "TIFF 常用于无损归档，支持多页、多分辨率、透明通道和 16 位色深。但浏览器原生不支持解码 TIFF，因此转 PNG 也需要服务端用 ImageMagick 等工具处理后再传输。本站当前未部署服务端 TIFF 解码能力，该转换对暂不可用，建议将 TIFF 先用本地软件转为 PNG 后再使用本站。",
+    "useCases": [
+      "将印刷用 TIFF 转为网络可用的 PNG",
+      "专业摄影 TIFF 归档转为跨平台可预览格式",
+      "扫描件 TIFF 批量转为 PNG 用于在线查看"
+    ],
+    "caveats": "浏览器端无法解码 TIFF，需服务端处理。多页 TIFF 转 PNG 时需要按页拆分或合成。16 位色深 TIFF 转 PNG 会降级为 8 位。",
+    "related": ["tiff-to-jpg", "bmp-to-png", "png-to-webp"],
+    "faq": [
+      { "question": "TIFF 和 PNG 有什么区别？", "answer": "TIFF 支持更多专业特性（多页、多层、16 位色深、CMYK），PNG 更适合网络分发。" },
+      { "question": "多页 TIFF 怎么转 PNG？", "answer": "服务端工具会按页生成多张 PNG，或合成一张长图。具体取决于工具配置。" },
+      { "question": "TIFF 转 PNG 体积会变大吗？", "answer": "通常 TIFF 比 PNG 大，转成 PNG 体积会缩小，但仍大于 JPG/WebP。" }
+    ]
+  },
+  {
+    "source": "GIF",
+    "target": "WebP",
+    "slug": "gif-to-webp",
+    "mimeSource": "image/gif",
+    "mimeTarget": "image/webp",
+    "conversionType": "有损",
+    "typicalSize": "3.5 MB → 600 KB",
+    "note": "GIF 是最老的图片格式之一，每帧只有 256 色，文件效率极低。GIF 转 WebP（动画）是现代替代方案。WebP 动画支持每帧 24 位真彩色和 Alpha 透明，帧率可达 30fps，同内容下体积只有 GIF 的 1/5 到 1/10。当前版本仅处理静态首帧。",
+    "useCases": [
+      "优化网站加载速度（GIF 是性能杀手）",
+      "社交媒体分享更流畅的动图",
+      "App 内动画素材瘦身"
+    ],
+    "caveats": "Safari 13 及以下不支持 WebP 动画。当前版本只导出静态首帧，完整动画转码将在后续版本支持。",
+    "related": ["webp-to-png", "png-to-webp", "webp-to-jpg"],
+    "faq": [
+      { "question": "GIF 转 WebP 颜色会更鲜艳吗？", "answer": "WebP 动画支持 24 位真彩色，颜色过渡更自然。但 GIF 源的 256 色限制无法通过转码突破。" },
+      { "question": "为什么体积差这么多？", "answer": "GIF 每帧重新存储且只有 256 色，WebP 用帧间差分和现代压缩算法，效率高得多。" },
+      { "question": "当前版本能转动画吗？", "answer": "当前只导出静态首帧，完整动画转码功能规划中。" }
+    ]
+  }
+]

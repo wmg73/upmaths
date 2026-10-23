@@ -1,0 +1,150 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+/* UpMaths —— 图片格式转换 + Markdown/LaTeX 编辑器
+ * 极简专业风，以信息展示和工具使用为主。
+ */
+
+/* Tailwind v4：让编辑器组件的 Tailwind 工具类也能被扫描到 */
+@source "../components/MdEditor.tsx";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family:
+      "Inter", "PingFang SC", "Microsoft YaHei", "Noto Sans SC",
+      system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+/* ==================================================================
+   Markdown 预览区排版（参考 upmath.me，简洁专业）
+   ================================================================== */
+
+.md-preview {
+  @apply text-[15px] leading-[1.8] text-slate-800;
+}
+
+.md-preview h1 {
+  @apply mt-6 mb-3 text-2xl font-bold border-b border-slate-200 pb-2;
+}
+
+.md-preview h2 {
+  @apply mt-6 mb-3 text-xl font-semibold border-b border-slate-200 pb-1.5;
+}
+
+.md-preview h3 {
+  @apply mt-5 mb-2 text-lg font-semibold;
+}
+
+.md-preview h4 {
+  @apply mt-4 mb-2 text-base font-semibold;
+}
+
+.md-preview p {
+  @apply my-3;
+}
+
+.md-preview a {
+  @apply text-blue-600 hover:text-blue-700 hover:underline;
+}
+
+.md-preview ul {
+  @apply my-2 list-disc pl-6;
+}
+
+.md-preview ol {
+  @apply my-2 list-decimal pl-6;
+}
+
+.md-preview li {
+  @apply my-1;
+}
+
+.md-preview blockquote {
+  @apply my-3 border-l-4 border-blue-400 bg-blue-50/50 px-4 py-2 text-slate-700 italic;
+}
+
+.md-preview code {
+  @apply rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[13px] text-rose-700;
+}
+
+.md-preview pre {
+  @apply my-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm;
+}
+
+.md-preview pre code {
+  @apply bg-transparent p-0 text-slate-100;
+}
+
+.md-preview hr {
+  @apply my-6 border-slate-200;
+}
+
+.md-preview table {
+  @apply my-4 w-full border-collapse text-sm;
+}
+
+.md-preview th {
+  @apply border border-slate-300 bg-slate-100 px-3 py-1.5 font-semibold;
+}
+
+.md-preview td {
+  @apply border border-slate-300 px-3 py-1.5;
+}
+
+.md-preview img {
+  @apply my-3 inline-block max-w-full rounded border border-slate-200;
+}
+
+.md-preview .katex {
+  @apply mx-0.5 font-normal text-[1.02em];
+}
+
+.md-preview .katex-display {
+  @apply my-4 overflow-x-auto overflow-y-hidden py-1;
+}
+
+.md-preview .katex-error {
+  @apply rounded bg-red-50 px-1.5 py-0.5 font-mono text-[12px] text-red-700;
+}
+
+/* 编辑器 textarea 等宽字体 */
+.md-editor-textarea {
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, "PingFang SC", monospace;
+  tab-size: 2;
+}

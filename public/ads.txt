@@ -1,0 +1,4 @@
+# UpMaths ads.txt
+# 说明：下方为 Google AdSense 标准记录。请将 pub-XXXXXXXXXXXXXXXX 替换为你的 AdSense 发布商 ID。
+# 获取方式：AdSense 后台 → 账号 → 账号信息 → 发布商 ID。
+google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

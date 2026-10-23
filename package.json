@@ -1,0 +1,46 @@
+{
+  "name": "upmaths",
+  "version": "0.1.0",
+  "private": true,
+  "description": "免费在线图片格式转换工具站：PNG、JPG、WebP、GIF、BMP 等格式互转，浏览器本地处理，保护隐私。",
+  "scripts": {
+    "dev": "next dev",
+    "validate-pairs": "tsx src/lib/validatePairs.ts",
+    "build": "npm run validate-pairs && next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "browserslist": [
+    ">0.3%",
+    "not dead",
+    "not op_mini all",
+    "chrome >= 90",
+    "firefox >= 88",
+    "safari >= 14",
+    "edge >= 90"
+  ],
+  "dependencies": {
+    "heic2any": "^0.0.4",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0",
+    "remark-math": "^6.0.0",
+    "rehype-katex": "^7.0.1",
+    "rehype-raw": "^7.0.0",
+    "katex": "^0.16.11"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/katex": "^0.16.7",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "^15.0.0",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5"
+  }
+}
