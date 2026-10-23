@@ -46,7 +46,9 @@ function getExt(name: string): string {
   return i > 0 ? name.slice(i).toLowerCase() : "";
 }
 
-/** 跑 soffice，Promise 化 */
+/** 跑 soffice，Promise 化。
+ *  注意：soffice 出错时退出码可能仍为 0（如 "no export filter"），
+ *  因此需要同时检查 stderr 是否包含 Error 关键字。 */
 function runSoffice(
   inputPath: string,
   outDir: string,
@@ -67,6 +69,32 @@ function runSoffice(
       inputPath,
     ];
     const proc = spawn("soffice", args, { timeout: 60_000 });
+    let err = "";
+    proc.stderr?.on("data", (d) => (err += d.toString()));
+    proc.stdout?.on("data", (d) => (err += d.toString()));
+    proc.on("error", (e) => {
+      resolve({ ok: false, stderr: e.message });
+    });
+    proc.on("close", (code) => {
+      // soffice 即使转换失败也可能返回 exit 0，需结合 stderr 判断
+      const hasError = /^Error:/im.test(err) || /no export filter/i.test(err);
+      resolve({ ok: code === 0 && !hasError, stderr: err });
+    });
+  });
+}
+
+/** 用 pdf2docx 把 PDF 转为 DOCX。
+ *  LibreOffice Draw 导出 docx 在此服务器版本有 bug（impl_store 失败），
+ *  故 pdf->docx 改用 Python pdf2docx 库。 */
+function runPdf2Docx(
+  inputPath: string,
+  outputPath: string,
+): Promise<{ ok: boolean; stderr: string }> {
+  return new Promise((resolve) => {
+    const script = path.join(process.cwd(), "src", "lib", "convert_pdf_to_docx.py");
+    const proc = spawn("/usr/bin/python3", [script, inputPath, outputPath], {
+      timeout: 120_000,
+    });
     let err = "";
     proc.stderr?.on("data", (d) => (err += d.toString()));
     proc.stdout?.on("data", (d) => (err += d.toString()));
@@ -125,20 +153,29 @@ export async function POST(req: Request) {
     await writeFile(inputPath, buffer);
 
     // ---- 3. 执行转换 ----
-    const result = await runSoffice(inputPath, workDir, cfg.sofficeFormat);
+    const baseName = safeName.slice(0, safeName.lastIndexOf("."));
+    const outPath = path.join(workDir, baseName + cfg.targetExt);
+
+    let result: { ok: boolean; stderr: string };
+    if (direction === "pdf-to-docx") {
+      // PDF -> DOCX：LibreOffice Draw 导出 docx 在此版本有 bug，改用 pdf2docx
+      result = await runPdf2Docx(inputPath, outPath);
+    } else {
+      // Word -> PDF：继续用 LibreOffice（Writer 导出 pdf 正常）
+      result = await runSoffice(inputPath, workDir, cfg.sofficeFormat);
+    }
+
     if (!result.ok) {
       return NextResponse.json(
-        { error: "LibreOffice 转换失败，请稍后重试。", detail: result.stderr.slice(-500) },
+        { error: "转换失败，请稍后重试。", detail: result.stderr.slice(-500) },
         { status: 502 },
       );
     }
 
     // ---- 4. 找输出文件 ----
-    const baseName = safeName.slice(0, safeName.lastIndexOf("."));
-    const outPath = path.join(workDir, baseName + cfg.targetExt);
     if (!existsSync(outPath)) {
       return NextResponse.json(
-        { error: "转换完成但未找到输出文件" },
+        { error: "转换完成但未找到输出文件", detail: result.stderr.slice(-500) },
         { status: 502 },
       );
     }
