@@ -1,0 +1,702 @@
+[
+  {
+    "source": "PNG",
+    "target": "JPG",
+    "slug": "png-to-jpg",
+    "mimeSource": "image/png",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "Lossy",
+    "typicalSize": "2.4 MB → 350 KB",
+    "note": "PNG is a lossless format with no compromise on quality, which is why files tend to be large. When converting to JPG the browser first decodes the PNG into memory, then resamples and compresses it with a JPEG encoder. Because JPG has no alpha channel, the PNG transparency layer is flattened onto a white background.",
+    "useCases": [
+      "Export a design mockup for web sharing at a smaller file size",
+      "Speed up page loads where oversized PNGs hurt Core Web Vitals",
+      "Batch-convert screenshots to JPG to save storage"
+    ],
+    "caveats": "PNG transparency is discarded and replaced with a white background. High-contrast elements such as text, charts, and logos can show compression artifacts at low quality settings.",
+    "related": [
+      "png-to-webp",
+      "jpg-to-png",
+      "heic-to-jpg"
+    ],
+    "faq": [
+      {
+        "question": "Why did my transparent PNG turn black after converting to JPG?",
+        "answer": "That is the default behaviour of some online tools. This converter fills transparent areas with white so images do not come out dark."
+      },
+      {
+        "question": "How much quality is lost when converting PNG to JPG?",
+        "answer": "It depends on the JPG quality setting. 85–90 is the sweet spot between size and fidelity; differences are usually invisible to the eye."
+      },
+      {
+        "question": "Can I convert several images at once?",
+        "answer": "The current version handles one image per conversion. Batch mode is planned for a later release."
+      }
+    ]
+  },
+  {
+    "source": "PNG",
+    "target": "WebP",
+    "slug": "png-to-webp",
+    "mimeSource": "image/png",
+    "mimeTarget": "image/webp",
+    "conversionType": "Lossy",
+    "typicalSize": "2.4 MB → 560 KB",
+    "note": "Converting PNG to WebP is currently the single most effective image optimisation step. The WebP encoder re-analyses the PNG pixel data using more advanced prediction and entropy coding. WebP supports an alpha channel natively, so PNG transparency is fully preserved.",
+    "useCases": [
+      "Improve LCP for images on your website and load pages faster",
+      "Shrink app image assets and cut mobile data usage",
+      "Plug into a CDN auto-transcoding pipeline"
+    ],
+    "caveats": "Safari 13 and earlier do not support WebP. WebP does not support EXIF metadata, so camera information is lost.",
+    "related": [
+      "png-to-jpg",
+      "webp-to-png",
+      "gif-to-webp"
+    ],
+    "faq": [
+      {
+        "question": "Is transparency preserved after PNG to WebP conversion?",
+        "answer": "Yes. WebP supports an alpha channel natively, so the PNG transparent areas are kept intact."
+      },
+      {
+        "question": "How much smaller is WebP than PNG?",
+        "answer": "In typical cases lossy WebP is 30–50% smaller than PNG. The more colours and gradients an image has, the higher the compression ratio."
+      },
+      {
+        "question": "What if an old browser cannot display WebP?",
+        "answer": "All modern browsers support it. For the rare legacy client, use a <picture> element with a PNG fallback."
+      }
+    ]
+  },
+  {
+    "source": "PNG",
+    "target": "BMP",
+    "slug": "png-to-bmp",
+    "mimeSource": "image/png",
+    "mimeTarget": "image/bmp",
+    "conversionType": "Lossless",
+    "typicalSize": "2.4 MB → 6.1 MB",
+    "note": "BMP is a completely uncompressed bitmap format that stores image data pixel by pixel. Converting to BMP effectively strips away PNG's compression, so the file grows considerably. Use it only when you need compatibility with an old Windows system or with professional software that accepts nothing but BMP.",
+    "useCases": [
+      "Internal image tool chains on Windows systems",
+      "Export for software that requires BMP input",
+      "Use as an intermediate format for certain professional drawing tools"
+    ],
+    "caveats": "BMP uses no compression at all, so files are 2–3 times larger than PNG. It carries no cross-platform metadata.",
+    "related": [
+      "png-to-jpg",
+      "bmp-to-png",
+      "bmp-to-jpg"
+    ],
+    "faq": [
+      {
+        "question": "Does PNG to BMP conversion lose quality?",
+        "answer": "No. BMP is lossless, so pixel values stay identical. The file simply becomes much larger."
+      },
+      {
+        "question": "Why would anyone convert to BMP?",
+        "answer": "In most cases you would not. It matters only when a legacy Windows program accepts BMP as its sole input format."
+      },
+      {
+        "question": "Does BMP keep the alpha channel?",
+        "answer": "32-bit BMP supports an alpha channel, and the BMP exported by this tool preserves the original PNG transparency."
+      }
+    ]
+  },
+  {
+    "source": "PNG",
+    "target": "ICO",
+    "slug": "png-to-ico",
+    "mimeSource": "image/png",
+    "mimeTarget": "image/vnd.microsoft.icon",
+    "conversionType": "Lossless",
+    "typicalSize": "Multi-size bundle",
+    "note": "ICO is the Windows icon format: a single file can embed several size frames from 16×16 up to 256×256. Browsers cannot export ICO directly, so this tool resamples the image through Canvas at multiple sizes and assembles the ICO binary structure itself—ideal for website favicons and desktop icons.",
+    "useCases": [
+      "Create a website favicon (/favicon.ico)",
+      "Windows desktop shortcut icons",
+      "Chrome or Firefox extension icons"
+    ],
+    "caveats": "Frames inside an ICO cannot exceed 256×256, so start from an image of at least 1024×1024 to keep small sizes crisp. Complex transparency gradients are lost at 16×16.",
+    "related": [
+      "png-to-jpg",
+      "png-to-webp",
+      "bmp-to-png"
+    ],
+    "faq": [
+      {
+        "question": "Do favicons have to be ICO?",
+        "answer": "Every modern browser accepts PNG favicons. ICO mainly remains for very old browsers and Windows desktop icons."
+      },
+      {
+        "question": "Which sizes should an ICO contain?",
+        "answer": "16, 32, 48 and 256 is the recommended set, covering browser tabs through large desktop icons."
+      },
+      {
+        "question": "Why does my icon look blurry after converting to ICO?",
+        "answer": "The source resolution is too small. Start from a PNG of at least 512×512."
+      }
+    ]
+  },
+  {
+    "source": "JPG",
+    "target": "PNG",
+    "slug": "jpg-to-png",
+    "mimeSource": "image/jpeg",
+    "mimeTarget": "image/png",
+    "conversionType": "Lossless",
+    "typicalSize": "500 KB → 3.2 MB",
+    "note": "JPG is a lossy format, so its pixel data has already gone through one irreversible compression pass. Converting to PNG makes the browser decode the JPG back into a bitmap and re-encode it with PNG's lossless algorithm. The conversion itself adds no further loss, but the damage done by the original JPG compression cannot be recovered by any format change.",
+    "useCases": [
+      "Submit images to a system or platform that only accepts PNG",
+      "Edit an existing JPG photo in traditional design software",
+      "Store an existing photo in a lossless archive"
+    ],
+    "caveats": "Quality already lost in the JPG cannot be restored by converting to PNG. Files typically grow 3–5 times larger.",
+    "related": [
+      "jpg-to-webp",
+      "png-to-jpg",
+      "svg-to-jpg"
+    ],
+    "faq": [
+      {
+        "question": "Does JPG to PNG conversion improve image quality?",
+        "answer": "No. Once a JPG is saved, some original information is gone for good; no lossless format can bring it back."
+      },
+      {
+        "question": "Why is the PNG bigger than the JPG?",
+        "answer": "That is expected. JPG compresses photographs far more aggressively than PNG. If you want a smaller file, convert to WebP instead."
+      },
+      {
+        "question": "Why does the resulting PNG have no transparency?",
+        "answer": "Because JPG itself has no alpha channel, so the PNG produced from it has none either."
+      }
+    ]
+  },
+  {
+    "source": "JPG",
+    "target": "WebP",
+    "slug": "jpg-to-webp",
+    "mimeSource": "image/jpeg",
+    "mimeTarget": "image/webp",
+    "conversionType": "Lossy",
+    "typicalSize": "500 KB → 320 KB",
+    "note": "WebP's lossy encoder is more efficient than JPEG: at the same visual quality a WebP file can be another 25–35% smaller. If the source JPG was saved at a high quality setting (90+), transcoding to WebP introduces no noticeable extra loss.",
+    "useCases": [
+      "Reduce image weight on websites and improve Core Web Vitals",
+      "Slim down assets shipped in mobile apps",
+      "Store identical content in an archive at a smaller size"
+    ],
+    "caveats": "If the original JPG has already been re-compressed several times, WebP transcoding stacks another lossy pass on top. WebP does not support EXIF.",
+    "related": [
+      "jpg-to-png",
+      "png-to-webp",
+      "webp-to-jpg"
+    ],
+    "faq": [
+      {
+        "question": "Can you see a difference after JPG to WebP conversion?",
+        "answer": "Barely. WebP at quality 75 looks comparable to JPG at 90 or above."
+      },
+      {
+        "question": "Can WebP replace JPG entirely?",
+        "answer": "Technically yes. Ecosystem migration, however, takes time."
+      },
+      {
+        "question": "Why do many CMS platforms still serve JPG?",
+        "answer": "Image pipelines in CMS products are long-lived, and upgrading them touches many parts of the stack."
+      }
+    ]
+  },
+  {
+    "source": "JPG",
+    "target": "BMP",
+    "slug": "jpg-to-bmp",
+    "mimeSource": "image/jpeg",
+    "mimeTarget": "image/bmp",
+    "conversionType": "Lossless",
+    "typicalSize": "500 KB → 4.8 MB",
+    "note": "Converting JPG to BMP moves from a lossy format to an uncompressed one. The browser decodes the JPG into a full pixel matrix and stores it bit by bit in BMP layout. The size explosion is normal—BMP applies no compression whatsoever.",
+    "useCases": [
+      "Compatibility with legacy Windows screenshot tool chains",
+      "Import into industrial or medical imaging software that only reads BMP",
+      "Test images for certain hardware drivers"
+    ],
+    "caveats": "Files grow 5–10 times larger. JPG has no alpha channel, and BMP will not invent transparency that was never there.",
+    "related": [
+      "jpg-to-png",
+      "bmp-to-jpg",
+      "bmp-to-png"
+    ],
+    "faq": [
+      {
+        "question": "Should I convert JPG to BMP or to PNG?",
+        "answer": "PNG is the better choice in almost every case. Only convert to BMP if the target software explicitly demands it."
+      },
+      {
+        "question": "Why are BMP files so large?",
+        "answer": "BMP barely compresses anything—roughly three bytes per pixel."
+      },
+      {
+        "question": "Can converting JPG to BMP restore EXIF data?",
+        "answer": "No. The BMP format does not support EXIF."
+      }
+    ]
+  },
+  {
+    "source": "WebP",
+    "target": "PNG",
+    "slug": "webp-to-png",
+    "mimeSource": "image/webp",
+    "mimeTarget": "image/png",
+    "conversionType": "Lossless",
+    "typicalSize": "560 KB → 2.1 MB",
+    "note": "Converting WebP to PNG steps back from a modern format to a traditional lossless one. WebP pixel data is fully decoded and the alpha channel is preserved intact by PNG. PNG is lossless, so the conversion itself adds no further degradation.",
+    "useCases": [
+      "Open an image on old devices or software without WebP support",
+      "Import into legacy design tools that cannot read WebP",
+      "Deliver assets to systems that only accept PNG"
+    ],
+    "caveats": "File size can grow substantially. If the source WebP was lossy, converting back to PNG cannot exceed the quality already lost.",
+    "related": [
+      "webp-to-jpg",
+      "png-to-webp",
+      "webp-to-bmp"
+    ],
+    "faq": [
+      {
+        "question": "Does WebP to PNG conversion lose quality?",
+        "answer": "Lossless WebP to PNG is completely lossless. Lossy WebP to PNG adds no further loss."
+      },
+      {
+        "question": "Can Photoshop open WebP directly?",
+        "answer": "Photoshop 23.2 and later supports it natively. Earlier versions require a PNG conversion first."
+      },
+      {
+        "question": "Can animated WebP be converted to GIF?",
+        "answer": "The current version works with static frames only. Animated transcoding is planned."
+      }
+    ]
+  },
+  {
+    "source": "WebP",
+    "target": "JPG",
+    "slug": "webp-to-jpg",
+    "mimeSource": "image/webp",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "Lossy",
+    "typicalSize": "560 KB → 480 KB",
+    "note": "Converting WebP to JPG moves from a modern format back to a universal one. The browser decodes WebP into pixels and recompresses them with a JPEG encoder. Since JPG has no alpha channel, any WebP transparency is flattened onto a white background.",
+    "useCases": [
+      "Upload images to legacy platforms that only accept JPG",
+      "Guarantee compatibility when sharing across devices",
+      "Insert images into traditional documents or slide decks"
+    ],
+    "caveats": "WebP transparency is lost and replaced with white. Two lossy passes stacked together can cause additional degradation.",
+    "related": [
+      "webp-to-png",
+      "jpg-to-webp",
+      "png-to-jpg"
+    ],
+    "faq": [
+      {
+        "question": "Is double lossy compression a problem for WebP to JPG?",
+        "answer": "If both passes use high quality settings (85 or above), the extra loss is usually negligible."
+      },
+      {
+        "question": "What colour do transparent WebP areas become in JPG?",
+        "answer": "This tool fills them with a white background consistently."
+      },
+      {
+        "question": "Can I convert the JPG back to WebP afterwards?",
+        "answer": "Yes, but every round trip adds another lossy pass. Keep the original file if quality matters."
+      }
+    ]
+  },
+  {
+    "source": "WebP",
+    "target": "BMP",
+    "slug": "webp-to-bmp",
+    "mimeSource": "image/webp",
+    "mimeTarget": "image/bmp",
+    "conversionType": "Lossless",
+    "typicalSize": "560 KB → 5.9 MB",
+    "note": "Converting WebP to BMP drops from a highly efficient compressed format to a completely uncompressed one. Size grows by an order of magnitude. It only makes sense for the rare legacy system that insists on BMP input.",
+    "useCases": [
+      "Fixed-format requirements on embedded or industrial systems",
+      "Windows tools that accept only BMP input",
+      "Use as an intermediate format for very old software"
+    ],
+    "caveats": "Files can grow more than tenfold. If the source WebP was lossy, the pixel data has already been through lossy compression.",
+    "related": [
+      "webp-to-png",
+      "webp-to-jpg",
+      "bmp-to-webp"
+    ],
+    "faq": [
+      {
+        "question": "When do I actually need WebP to BMP?",
+        "answer": "Rarely. PNG is a better alternative, and BMP is only required when the target system accepts nothing else."
+      },
+      {
+        "question": "Does BMP have any advantage over PNG?",
+        "answer": "None. PNG is smaller, compressed, and cross-platform."
+      },
+      {
+        "question": "Could I skip WebP and convert the original straight to BMP?",
+        "answer": "Yes. WebP to BMP is essentially decode-then-re-encode into an uncompressed format."
+      }
+    ]
+  },
+  {
+    "source": "BMP",
+    "target": "PNG",
+    "slug": "bmp-to-png",
+    "mimeSource": "image/bmp",
+    "mimeTarget": "image/png",
+    "conversionType": "Lossless",
+    "typicalSize": "4.8 MB → 1.1 MB",
+    "note": "Converting BMP to PNG moves from an uncompressed format to an efficient lossless one. The raw BMP pixels are repackaged by PNG's lossless algorithm, typically shrinking the file 4–6 times with zero pixel loss.",
+    "useCases": [
+      "Compress and archive old Windows screenshots or scans",
+      "Normalise formats after pulling images from BMP-only tool chains",
+      "Cut disk usage with files several times smaller"
+    ],
+    "related": [
+      "bmp-to-jpg",
+      "png-to-bmp",
+      "bmp-to-webp"
+    ],
+    "faq": [
+      {
+        "question": "Does BMP to PNG conversion lose quality?",
+        "answer": "No. PNG is lossless, so pixel values match the BMP exactly."
+      },
+      {
+        "question": "Is the alpha channel of a 32-bit BMP preserved?",
+        "answer": "Yes. The Canvas API keeps the alpha channel intact when decoding BMP."
+      },
+      {
+        "question": "BMP to PNG or BMP to JPG?",
+        "answer": "PNG for graphics, screenshots and line art; JPG for photographs."
+      }
+    ]
+  },
+  {
+    "source": "BMP",
+    "target": "JPG",
+    "slug": "bmp-to-jpg",
+    "mimeSource": "image/bmp",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "Lossy",
+    "typicalSize": "4.8 MB → 520 KB",
+    "note": "BMP is an uncompressed raw bitmap, so converting to JPG is the most direct way to compress it. The browser decodes the BMP and recompresses it with a JPEG encoder: a 4.8 MB BMP typically lands around 500 KB at quality 92.",
+    "useCases": [
+      "Compress and share large images exported from legacy Windows systems",
+      "Turn scans or screenshots into web-friendly files",
+      "Batch-slim a library of BMP assets"
+    ],
+    "caveats": "If the BMP carries 32-bit transparency, those areas are filled with white in the JPG. JPG is lossy and a poor choice as an intermediate format for repeated editing.",
+    "related": [
+      "bmp-to-png",
+      "jpg-to-bmp",
+      "tiff-to-jpg"
+    ],
+    "faq": [
+      {
+        "question": "How much smaller does BMP to JPG get?",
+        "answer": "Typically 8–10 times smaller. More colours and gradients mean a higher ratio."
+      },
+      {
+        "question": "Will BMP to JPG look blurry?",
+        "answer": "At quality 92 the difference is usually invisible to the eye."
+      },
+      {
+        "question": "Can the JPG be converted back to BMP afterwards?",
+        "answer": "Yes, but converting back only expands pixels that are already lossy."
+      }
+    ]
+  },
+  {
+    "source": "BMP",
+    "target": "WebP",
+    "slug": "bmp-to-webp",
+    "mimeSource": "image/bmp",
+    "mimeTarget": "image/webp",
+    "conversionType": "Lossy",
+    "typicalSize": "4.8 MB → 340 KB",
+    "note": "WebP is more efficient than JPG, so at the same visual quality BMP to WebP delivers files another 25–35% smaller than BMP to JPG. WebP supports transparency natively, so alpha areas in the source BMP are preserved.",
+    "useCases": [
+      "The ultimate compression option for very large BMP images",
+      "Keep transparency while keeping files small",
+      "Batch-slim old asset libraries"
+    ],
+    "related": [
+      "bmp-to-png",
+      "bmp-to-jpg",
+      "webp-to-bmp"
+    ],
+    "faq": [
+      {
+        "question": "What does BMP to WebP offer over BMP to JPG?",
+        "answer": "Smaller files, transparency support, and better quality."
+      },
+      {
+        "question": "Should I choose lossy or lossless WebP?",
+        "answer": "Use lossy (quality 80–92) for most cases; choose lossless only when pixel-exact fidelity is required."
+      },
+      {
+        "question": "How fast is the conversion?",
+        "answer": "A 1920×1080 BMP takes roughly 0.5–2 seconds in Chrome."
+      }
+    ]
+  },
+  {
+    "source": "HEIC",
+    "target": "JPG",
+    "slug": "heic-to-jpg",
+    "mimeSource": "image/heic",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "Lossy",
+    "typicalSize": "3.1 MB → 850 KB",
+    "note": "HEIC is the default photo format on iPhone, with more than twice the compression efficiency of JPG. However, HEIC is not widely supported on Windows or on some Android devices. Converting to JPG is the most universal way to share photos across platforms; compatibility improves, at the cost of some quality. Decoding happens in the browser through the heic2any library.",
+    "useCases": [
+      "Share iPhone photos with people on Windows",
+      "Upload to social platforms that do not accept HEIC",
+      "Archive photos in one consistent cross-device format"
+    ],
+    "caveats": "heic2any is a WASM implementation, so CPU usage is high on large files—keep single files at or below 20 MB. The first HEIC decode in a session can take 2–3 seconds while the library loads.",
+    "related": [
+      "heic-to-png",
+      "png-to-jpg",
+      "jpg-to-png"
+    ],
+    "faq": [
+      {
+        "question": "Why do iPhone photos come out as HEIC instead of JPG?",
+        "answer": "Since iOS 11 the iPhone camera defaults to HEIC, which is roughly half the size of a JPG at the same quality."
+      },
+      {
+        "question": "Does HEIC to JPG drop EXIF data?",
+        "answer": "Yes. The current conversion pipeline does not preserve EXIF metadata."
+      },
+      {
+        "question": "Windows cannot open HEIC—what should I do?",
+        "answer": "Windows 11 supports it out of the box; Windows 10 needs the HEIC extension, or simply convert to JPG with this tool."
+      }
+    ]
+  },
+  {
+    "source": "HEIC",
+    "target": "PNG",
+    "slug": "heic-to-png",
+    "mimeSource": "image/heic",
+    "mimeTarget": "image/png",
+    "conversionType": "Lossless",
+    "typicalSize": "3.1 MB → 6.8 MB",
+    "note": "Converting HEIC to PNG steps back from a modern efficient format to a traditional lossless one. PNG preserves the decoded HEIC pixels exactly, including the alpha channel. Files are much larger than HEIC, but compatibility is the best you can get.",
+    "useCases": [
+      "Submit iPhone photos to systems that only accept PNG",
+      "Edit iPhone images in traditional design software",
+      "Standardise on PNG when lossless archiving is required"
+    ],
+    "caveats": "PNG files are considerably larger than HEIC or JPG. HEIC is lossy, so a PNG conversion cannot recover what the HEIC encoder already discarded.",
+    "related": [
+      "heic-to-jpg",
+      "webp-to-png",
+      "png-to-webp"
+    ],
+    "faq": [
+      {
+        "question": "How large will the PNG be compared with HEIC?",
+        "answer": "Usually two to three times the original HEIC, which is expected."
+      },
+      {
+        "question": "What happens to HDR when HEIC is converted to PNG?",
+        "answer": "HDR is tone-mapped down to standard SDR, because PNG itself does not support HDR."
+      },
+      {
+        "question": "Can I batch-convert iPhone HEIC photos?",
+        "answer": "The current version handles one image at a time; batch support is planned."
+      }
+    ]
+  },
+  {
+    "source": "SVG",
+    "target": "PNG",
+    "slug": "svg-to-png",
+    "mimeSource": "image/svg+xml",
+    "mimeTarget": "image/png",
+    "conversionType": "Lossless",
+    "typicalSize": "12 KB → 180 KB (1024×1024)",
+    "note": "SVG is a vector format that scales to any size without distortion. Converting to PNG requires rasterisation: this tool derives the target size from the SVG viewBox, renders it to a Canvas and exports from there. The longest edge is capped at 4096 pixels by default.",
+    "useCases": [
+      "Export a vector logo as PNG for platforms that reject SVG",
+      "Insert images into PowerPoint, Word and other traditional office software",
+      "Share on social platforms, most of which do not accept SVG uploads"
+    ],
+    "caveats": "External resources referenced from the SVG (for example bitmaps inside an image tag) may be blocked by cross-origin restrictions and render blank. Pure vector artwork is unaffected.",
+    "related": [
+      "svg-to-jpg",
+      "png-to-ico",
+      "png-to-webp"
+    ],
+    "faq": [
+      {
+        "question": "What size gives the sharpest SVG to PNG result?",
+        "answer": "256 or 512 for website icons, at least 1024 for print. This tool derives the size from the viewBox automatically."
+      },
+      {
+        "question": "Why does the PNG have a transparent background?",
+        "answer": "Because the SVG itself has no canvas background. Convert to JPG for white, or add a background rectangle to the artwork."
+      },
+      {
+        "question": "Why do fonts look different after converting SVG to PNG?",
+        "answer": "Text elements rely on system fonts for rendering. Convert text to paths before rasterising for a faithful result."
+      }
+    ]
+  },
+  {
+    "source": "SVG",
+    "target": "JPG",
+    "slug": "svg-to-jpg",
+    "mimeSource": "image/svg+xml",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "Lossy",
+    "typicalSize": "12 KB → 120 KB (1024×1024)",
+    "note": "SVG to JPG adds one step compared with PNG: because JPG has no alpha channel, the rasterised result is filled with a white background before encoding. JPG files are smaller, which suits sharing and web delivery.",
+    "useCases": [
+      "Upload vector logos to platforms that accept neither SVG nor transparent PNG",
+      "Create social media post images with a white background",
+      "Embed images in documents and emails"
+    ],
+    "caveats": "Transparent areas are filled with white automatically—add a rect background inside the SVG if you need a dark backdrop. Text rendering is still subject to system fonts.",
+    "related": [
+      "svg-to-png",
+      "jpg-to-png",
+      "png-to-jpg"
+    ],
+    "faq": [
+      {
+        "question": "Why does my SVG to JPG have white borders?",
+        "answer": "When the viewBox includes padding around the artwork, rasterising plus white fill makes it look like a border. A background rectangle that covers the full canvas removes it."
+      },
+      {
+        "question": "What quality setting should I use for SVG to JPG?",
+        "answer": "The default of 92 is already sharp. Use 95 for print, and avoid going below 80 where crisp edges start to block up."
+      },
+      {
+        "question": "Do gradients survive SVG to JPG conversion?",
+        "answer": "Linear and radial gradients are preserved. Complex filters may show slight artefacts around edges."
+      }
+    ]
+  },
+  {
+    "source": "TIFF",
+    "target": "JPG",
+    "slug": "tiff-to-jpg",
+    "mimeSource": "image/tiff",
+    "mimeTarget": "image/jpeg",
+    "conversionType": "Lossy",
+    "noindex": true,
+    "typicalSize": "Requires server-side processing",
+    "note": "TIFF is a lossless, high-fidelity image format common in printing, publishing and professional photo archives. Unfortunately almost no browser decodes TIFF natively—only Safari does, and only partially. TIFF to JPG therefore cannot be done reliably in the browser alone and needs server-side tooling such as ImageMagick. This site does not currently run server-side TIFF decoding, so this conversion is unavailable; convert the TIFF to PNG or JPG with local software first, then use the other converters here.",
+    "useCases": [
+      "Turn scanned print artwork or publications into JPG for web distribution",
+      "Compress TIFF archives produced by professional photo workflows for sharing",
+      "Generate thumbnails from medical imaging TIFF files"
+    ],
+    "caveats": "Browsers cannot decode TIFF today, so this conversion requires a server-side component (ImageMagick, sharp or libvips). Convert the TIFF to PNG before uploading, or deploy a backend with image processing.",
+    "related": [
+      "tiff-to-png",
+      "bmp-to-jpg",
+      "png-to-jpg"
+    ],
+    "faq": [
+      {
+        "question": "Why can't TIFF be converted in the browser?",
+        "answer": "TIFF is an extremely complex container with many codecs and tags. Mainstream browsers leave TIFF decoding out for security and performance reasons."
+      },
+      {
+        "question": "What server-side options exist?",
+        "answer": "ImageMagick, sharp (Node.js) and libvips all handle TIFF efficiently and can run on serverless functions or your own backend."
+      },
+      {
+        "question": "Is there a workaround?",
+        "answer": "Convert the TIFF to PNG first with local software such as Photoshop or XnView, then convert that PNG to JPG here."
+      }
+    ]
+  },
+  {
+    "source": "TIFF",
+    "target": "PNG",
+    "slug": "tiff-to-png",
+    "mimeSource": "image/tiff",
+    "mimeTarget": "image/png",
+    "conversionType": "Lossless",
+    "noindex": true,
+    "typicalSize": "Requires server-side processing",
+    "note": "TIFF is widely used for lossless archiving and supports multiple pages, multiple resolutions, alpha channels and 16-bit colour depth. Browsers cannot decode TIFF natively, so converting to PNG also needs server-side processing with a tool such as ImageMagick. This site does not currently run server-side TIFF decoding, so this conversion is unavailable; convert the TIFF to PNG with local software first.",
+    "useCases": [
+      "Turn print TIFF files into web-ready PNG",
+      "Convert professional photography TIFF archives into a previewable cross-platform format",
+      "Batch-convert scanned TIFF files to PNG for online viewing"
+    ],
+    "caveats": "Browsers cannot decode TIFF, so server-side processing is required. Multi-page TIFF must be split or composited page by page. 16-bit TIFF is downsampled to 8-bit in PNG.",
+    "related": [
+      "tiff-to-jpg",
+      "bmp-to-png",
+      "png-to-webp"
+    ],
+    "faq": [
+      {
+        "question": "What is the difference between TIFF and PNG?",
+        "answer": "TIFF supports more professional features—multiple pages, layers, 16-bit depth and CMYK—while PNG is better suited to web delivery."
+      },
+      {
+        "question": "How are multi-page TIFF files converted to PNG?",
+        "answer": "Server-side tools either emit one PNG per page or composite them into a single tall image, depending on configuration."
+      },
+      {
+        "question": "Does TIFF to PNG get larger?",
+        "answer": "TIFF is usually larger than PNG, so the PNG comes out smaller—though still bigger than JPG or WebP."
+      }
+    ]
+  },
+  {
+    "source": "GIF",
+    "target": "WebP",
+    "slug": "gif-to-webp",
+    "mimeSource": "image/gif",
+    "mimeTarget": "image/webp",
+    "conversionType": "Lossy",
+    "typicalSize": "3.5 MB → 600 KB",
+    "note": "GIF is one of the oldest image formats: at most 256 colours per frame and extremely inefficient storage. WebP is the modern replacement — 24-bit true colour with alpha transparency, at roughly one fifth to one tenth the size for the same image. Note that browsers can only decode the first frame of a GIF, so this tool exports a still WebP of that frame.",
+    "useCases": [
+      "Pull the first frame out of a GIF sticker and keep it as a small still image",
+      "Slim down page images — GIF is one of the largest contributors to page weight",
+      "Replace static assets inside an app"
+    ],
+    "caveats": "Only the first frame is converted, so the animation is lost. To keep the motion, use a tool that encodes frame by frame (gif2webp, ffmpeg).",
+    "related": [
+      "webp-to-png",
+      "png-to-webp",
+      "webp-to-jpg"
+    ],
+    "faq": [
+      {
+        "question": "Do colours look richer after GIF to WebP?",
+        "answer": "The first frame does. WebP supports 24-bit true colour, so banding and dither noise disappear. The original 256-colour limit cannot be transcoded away, though — colours already lost do not come back."
+      },
+      {
+        "question": "Why is the size difference so large?",
+        "answer": "GIF stores every frame independently with 256 colours and relies on dithering to fake gradients; WebP uses intra prediction with modern entropy coding, which is far more efficient on the same frame. Note this compares one frame, not an entire animation."
+      },
+      {
+        "question": "Can this version convert animations?",
+        "answer": "No. The browser Canvas API decodes only the first frame of a GIF, so the output is a still image. For animated WebP, encode frame by frame with gif2webp or ffmpeg."
+      }
+    ]
+  }
+]
