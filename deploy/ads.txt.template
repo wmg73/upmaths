@@ -1,0 +1,15 @@
+# UpMaths ads.txt 模板
+#
+# 用途：拿到 AdSense 真实发布商 ID 后，生成 public/ads.txt。
+# 步骤：
+#   1. AdSense 后台 → 账号 → 账号信息 → 复制「发布商 ID」（形如 pub-16位数字）
+#   2. 在服务器上执行：
+#        cd /var/www/upmaths
+#        sed "s/pub-XXXXXXXXXXXXXXXX/pub-你的真实ID/" deploy/ads.txt.template > public/ads.txt
+#   3. 验证（应返回 200 且内容含真实 ID）：
+#        curl -s https://upmaths.com/ads.txt
+#
+# 注意：nginx 已有 location = /ads.txt 直出规则，无需改动。
+# 未生成 public/ads.txt 时该路径返回 404，这是 AdSense 允许的状态；
+# 但绝不要放占位符 pub-XXXXXXXXXXXXXXXX，那会被判定为「包含错误条目」。
+google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
